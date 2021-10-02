@@ -6,6 +6,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.ClientState.Objects;
+using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Toast;
@@ -33,6 +34,7 @@ namespace RemindMe {
         [PluginService] public static TargetManager Targets { get; private set; }
         [PluginService] public static ToastGui Toasts { get; private set; }
         [PluginService] public static JobGauges JobGauges { get; private set; }
+        [PluginService] public static PartyList PartyList { get; private set; }
 
         // Fake Services
         public static UiBuilder UiBuilder => PluginInterface?.UiBuilder;

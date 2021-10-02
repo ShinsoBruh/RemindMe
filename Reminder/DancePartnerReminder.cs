@@ -20,6 +20,7 @@ namespace RemindMe.Reminder {
         public override bool ShouldShow(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             return Service.ClientState.LocalPlayer.ClassJob.Id == 38  &&
                    Service.ClientState.LocalPlayer.Level >= 60 &&
+                   Service.PartyList.Length >= 2 &&
                    Service.ClientState.LocalPlayer.StatusList.All(s => s.StatusId != 1823);
         }
 
