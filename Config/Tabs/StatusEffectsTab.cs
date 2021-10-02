@@ -68,8 +68,10 @@ namespace RemindMe {
                         tankRoleEffects();
                         break;
                     }
+                case 4:
                 case 22: {
                         // DRG
+                        StatusMonitorConfigDisplay(1864, 20); // Lance Charge
                         StatusMonitorConfigDisplay(1914, 30, alwaysAvailable: true, minLevel: 18); // Disembowment
                         StatusMonitorConfigDisplay(118, 24, alwaysAvailable: true, minLevel: 50); // Chaos Thrust
                         break;
