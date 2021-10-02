@@ -409,7 +409,7 @@ namespace RemindMe {
 
                     if (isBegin) {
 
-                        if (!display.Locked) {
+                        if (!display.Locked && !display.HideUnlockedWarning) {
                             var dl = ImGui.GetWindowDrawList();
                             var winWidth = ImGui.GetWindowSize() * Vector2.UnitX;
                             var cPos = ImGui.GetWindowPos() + (winWidth / 2);

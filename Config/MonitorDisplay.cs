@@ -47,6 +47,7 @@ namespace RemindMe.Config {
 
         public bool Locked = false;
         public bool AllowClicking = false;
+        public bool HideUnlockedWarning = false;
 
         public bool OnlyShowReady = false;
         public bool OnlyShowCooldown = false;
@@ -127,10 +128,16 @@ namespace RemindMe.Config {
         public void DrawConfigEditor(RemindMeConfig mainConfig, RemindMe plugin, ref Guid? deletedMonitor, ref MonitorDisplay copiedDisplay) {
             ImGui.Indent(10);
             if (ImGui.Checkbox($"Enabled##{this.Guid}", ref this.Enabled)) mainConfig.Save();
-            if (ImGui.Checkbox($"Lock Display##{this.Guid}", ref this.Locked)) mainConfig.Save();
             ImGui.SameLine();
             ImGui.SetNextItemWidth(150);
             if (ImGui.InputText($"###displayName{this.Guid}", ref this.Name, 32)) mainConfig.Save();
+            if (ImGui.Checkbox($"Lock Display##{this.Guid}", ref this.Locked)) mainConfig.Save();
+            if (!Locked) {
+                ImGui.SameLine();
+                if (ImGui.Checkbox($"Hide Unlocked Warning##{this.Guid}", ref this.HideUnlockedWarning)) mainConfig.Save();
+                ImGui.TextDisabled("An unlocked display will always show the background and border\n");
+                ImGui.TextDisabled("and will not respect some options such as 'Hide outside combat'.");
+            }
             if (ImGui.Checkbox($"Clickable##{this.Guid}", ref this.AllowClicking)) mainConfig.Save();
             ImGui.SameLine();
             ImGui.TextDisabled("A clickable display will allow selecting targets from status effects\nbut may get in the way of other activity.");
@@ -153,6 +160,11 @@ namespace RemindMe.Config {
             if (ImGui.ColorEdit4($"Status Effect##{Guid}", ref StatusEffectColor)) mainConfig.Save();
             if (ImGui.ColorEdit4($"Bar Background##{Guid}", ref BarBackgroundColor)) mainConfig.Save();
             if (ImGui.ColorEdit4($"Text##{Guid}", ref TextColor)) mainConfig.Save();
+
+            if (!Locked && HideUnlockedWarning) {
+                if (ImGui.ColorEdit4($"Border Colour (Unlocked)##{Guid}", ref UnlockedBorderColour)) mainConfig.Save();
+                if (ImGui.ColorEdit4($"Background Colour (Unlocked)##{Guid}", ref UnlockedBackgroundColor, ImGuiColorEditFlags.AlphaBar)) mainConfig.Save();
+            }
 
             ImGui.Separator();
             ImGui.Separator();
