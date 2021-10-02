@@ -115,9 +115,9 @@ namespace RemindMe.Config {
         public MonitorDisplay MakeCopy(bool withReminders) {
             // Horrible but easy copy
             var json = JsonConvert.SerializeObject(this);
-            var copy = JsonConvert.DeserializeObject<MonitorDisplay>(json);
+            var copy = JsonConvert.DeserializeObject<MonitorDisplay>(json) ?? new MonitorDisplay();
             copy.Guid = Guid.NewGuid();
-            copy.Name = copy.Name + " (Copy)";
+            copy.Name += " (Copy)";
 
             if (!withReminders) {
                 copy.Cooldowns.Clear();
