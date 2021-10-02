@@ -61,10 +61,7 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(735, 6); // Raw Intuition
                         StatusMonitorConfigDisplay(1457, 15); // Shake it Off
                         StatusMonitorConfigDisplay(1177, 10, selfOnly: true); // Inner Release
-
-                        // TODO: Obtain Ability IDs
-                        // StatusMonitorConfigDisplay(xxx, 6); // Nascent Flash
-
+                        StatusMonitorConfigDisplay(2227, 6, selfOnly: true); // Nascent Flash
                         tankRoleEffects();
                         break;
                     }
