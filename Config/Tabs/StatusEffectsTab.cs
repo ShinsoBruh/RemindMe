@@ -79,6 +79,7 @@ namespace RemindMe {
                 case 5:
                 case 23: {
                         // BRD
+                        StatusMonitorConfigDisplay(125, 20); // Raging Strikes
                         StatusMonitorConfigDisplay(122, 10, selfOnly: true); // Straight Shot Ready
                         StatusMonitorConfigDisplay(124, 30, alwaysAvailable: true, minLevel: 6, maxLevel: 63); // Venomous Bite
                         StatusMonitorConfigDisplay(129, 30, alwaysAvailable: true, minLevel: 30, maxLevel: 63); // Windbite
