@@ -43,7 +43,7 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(1856, 5, selfOnly: true); // Shelltron
                         StatusMonitorConfigDisplay(1174, 6); // Intervention
                         StatusMonitorConfigDisplay(81, 12); // Cover
-                        tankRoleEffects();
+                        TankRoleEffects();
                         break;
                 }
                 case 20: {
@@ -67,7 +67,7 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(1457, 15); // Shake it Off
                         StatusMonitorConfigDisplay(1177, 10, selfOnly: true); // Inner Release
                         StatusMonitorConfigDisplay(2227, 6, selfOnly: true); // Nascent Flash
-                        tankRoleEffects();
+                        TankRoleEffects();
                         break;
                     }
                 case 4:
@@ -168,7 +168,7 @@ namespace RemindMe {
                         // StatusMonitorConfigDisplay(xxx, 15); // Dark Missionary
                         // StatusMonitorConfigDisplay(xxx, 24); // Living Shadow
 
-                        tankRoleEffects();
+                        TankRoleEffects();
                         break;
                     }
                 case 33: {
@@ -220,7 +220,7 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(1832, 20, selfOnly: true); // Camouflage
                         StatusMonitorConfigDisplay(1834, 15, selfOnly: true); // Nebula
                         StatusMonitorConfigDisplay(1836, 8, selfOnly: true); // Superbolide
-                        tankRoleEffects();
+                        TankRoleEffects();
 
                         break;
                     }
@@ -255,7 +255,7 @@ namespace RemindMe {
             
         }
 
-        private void tankRoleEffects()
+        private void TankRoleEffects()
         {
             StatusMonitorConfigDisplay(1209, 6, selfOnly: true); // Arm's Length
             StatusMonitorConfigDisplay(9, 15, note: "from Arm's Length"); // Arm's Length Slow
