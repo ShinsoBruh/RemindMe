@@ -13,7 +13,6 @@ using Dalamud.Game.Libc;
 using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 
 namespace RemindMe {
 

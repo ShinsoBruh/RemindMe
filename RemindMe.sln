@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemindMe", "RemindMe.csproj", "{30BFDEDC-627B-4D5F-92FB-7B957B16DA2A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FFXIVClientStructs", "FFXIVClientStructs", "{5018E123-D4FC-4303-8825-5A081308E43C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIVClientStructs.Generators", "lib\FFXIVClientStructs\FFXIVClientStructs.Generators\FFXIVClientStructs.Generators.csproj", "{B98DA937-B3CC-49CF-BA95-7DA189504EF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIVClientStructs", "lib\FFXIVClientStructs\FFXIVClientStructs\FFXIVClientStructs.csproj", "{2054B594-1C79-40E3-B757-DAD628AB3D7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|x64 = Release|x64
@@ -19,11 +25,23 @@ Global
 		{30BFDEDC-627B-4D5F-92FB-7B957B16DA2A}.Release|x64.Build.0 = Release|x64
 		{30BFDEDC-627B-4D5F-92FB-7B957B16DA2A}.Debug|x64.ActiveCfg = Debug|x64
 		{30BFDEDC-627B-4D5F-92FB-7B957B16DA2A}.Debug|x64.Build.0 = Debug|x64
+		{B98DA937-B3CC-49CF-BA95-7DA189504EF0}.Release|x64.ActiveCfg = Release|Any CPU
+		{B98DA937-B3CC-49CF-BA95-7DA189504EF0}.Release|x64.Build.0 = Release|Any CPU
+		{B98DA937-B3CC-49CF-BA95-7DA189504EF0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B98DA937-B3CC-49CF-BA95-7DA189504EF0}.Debug|x64.Build.0 = Debug|Any CPU
+		{2054B594-1C79-40E3-B757-DAD628AB3D7E}.Release|x64.ActiveCfg = Release|Any CPU
+		{2054B594-1C79-40E3-B757-DAD628AB3D7E}.Release|x64.Build.0 = Release|Any CPU
+		{2054B594-1C79-40E3-B757-DAD628AB3D7E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2054B594-1C79-40E3-B757-DAD628AB3D7E}.Debug|x64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D4CCA4F-8495-48AC-94B9-156E89D32C52}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B98DA937-B3CC-49CF-BA95-7DA189504EF0} = {5018E123-D4FC-4303-8825-5A081308E43C}
+		{2054B594-1C79-40E3-B757-DAD628AB3D7E} = {5018E123-D4FC-4303-8825-5A081308E43C}
 	EndGlobalSection
 EndGlobal
