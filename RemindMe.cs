@@ -202,6 +202,7 @@ namespace RemindMe {
         private delegate bool ActionSpecialCheckDelegate(MonitorDisplay display, CooldownMonitor cooldownMonitor, DalamudPluginInterface pluginInterface);
 
         private Dictionary<uint, ActionSpecialCheckDelegate> actionSpecialChecks = new Dictionary<uint, ActionSpecialCheckDelegate> {
+            { 2872, (_, _, _) => Service.ClientState.LocalPlayer?.Level < 76 },
             { 7400, ((display, monitor, pluginInterface) => {
                 // Nastrond, Only show if in Life of the Dragon
                 if (Service.ClientState.LocalPlayer.ClassJob.Id != 22) return false;
@@ -213,7 +214,7 @@ namespace RemindMe {
                 if (Service.ClientState.LocalPlayer.ClassJob.Id != 22) return false;
                 var jobBar = Service.JobGauges.Get<DRGGauge>();
                 return jobBar.BOTDState != BOTDState.LOTD;
-            })}
+            })},
         };
 
         private List<DisplayTimer> GetTimerList(MonitorDisplay display) {
