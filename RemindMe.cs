@@ -202,6 +202,7 @@ namespace RemindMe {
         private delegate bool ActionSpecialCheckDelegate(MonitorDisplay display, CooldownMonitor cooldownMonitor, DalamudPluginInterface pluginInterface);
 
         private Dictionary<uint, ActionSpecialCheckDelegate> actionSpecialChecks = new Dictionary<uint, ActionSpecialCheckDelegate> {
+            { 38, (_, _, _) => Service.ClientState.LocalPlayer?.Level < 70 },
             { 2872, (_, _, _) => Service.ClientState.LocalPlayer?.Level < 76 },
             { 7400, ((display, monitor, pluginInterface) => {
                 // Nastrond, Only show if in Life of the Dragon
