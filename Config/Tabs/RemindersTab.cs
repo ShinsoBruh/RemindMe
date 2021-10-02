@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using ImGuiNET;
 
 namespace RemindMe {
@@ -31,7 +32,15 @@ namespace RemindMe {
                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.7f, 0.7f, 0.7f, 1));
                 ImGui.TextWrapped(r.Description);
                 ImGui.PopStyleColor();
-                ImGui.NextColumn();
+
+                try {
+                    var m = r.GetType().GetMethod("ConfigEditor", BindingFlags.Static | BindingFlags.Public);
+                    if (m != null) {
+                        m.Invoke(null, new object[] { plugin });
+                    }
+                } finally {
+                    ImGui.NextColumn();
+                }
 
                 foreach (var m in MonitorDisplays.Values.Where(d => d.Enabled)) {
 
