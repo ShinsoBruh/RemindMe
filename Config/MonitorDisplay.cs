@@ -103,6 +103,9 @@ namespace RemindMe.Config {
         public Vector4 TextColor = new Vector4(1f, 1f, 1f, 1f);
         public Vector4 BarBackgroundColor = new Vector4(0.3f, 0.3f, 0.3f, 0.5f);
 
+        public Vector4 UnlockedBorderColour = new Vector4(1, 0, 0, 1);
+        public Vector4 UnlockedBackgroundColor = new Vector4(0, 0, 0, 1);
+
         public int DisplayType = 0;
 
         [JsonIgnore] private bool tryDelete;

@@ -396,14 +396,14 @@ namespace RemindMe {
                     ImGui.SetNextWindowPos(new Vector2(250, 250), ImGuiCond.FirstUseEver);
 
                     if (display.IsClickableHovered || !display.Locked) {
-                        ImGui.PushStyleColor(ImGuiCol.Border, new Vector4(1, 0, 0, 1));
+                        ImGui.PushStyleColor(ImGuiCol.Border, display.UnlockedBorderColour);
+                        ImGui.PushStyleColor(ImGuiCol.WindowBg, display.UnlockedBackgroundColor);
                         ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 1);
                     }
 
-
                     var isBegin = ImGui.Begin($"Display##{display.Guid}", flags);
                     if (display.IsClickableHovered || !display.Locked) {
-                        ImGui.PopStyleColor();
+                        ImGui.PopStyleColor(2);
                         ImGui.PopStyleVar();
                     }
 
