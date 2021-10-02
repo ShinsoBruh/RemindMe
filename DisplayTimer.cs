@@ -14,7 +14,7 @@ namespace RemindMe {
         public string Name;
         public string TargetName = null;
         public bool TargetNameOnly;
-        public ushort IconId;
+        public uint IconId;
         public int StackCount = -1;
         public bool AllowCountdown = true;
 

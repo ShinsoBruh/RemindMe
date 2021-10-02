@@ -55,7 +55,7 @@ namespace RemindMe.Reminder {
 
         }
 
-        public override ushort GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
+        public override uint GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             try {
                 var action = Service.Data.Excel.GetSheet<Action>().GetRow(TankStanceActions[Service.ClientState.LocalPlayer.ClassJob.Id]);
                 return action.Icon;

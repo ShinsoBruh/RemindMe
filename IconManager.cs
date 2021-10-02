@@ -11,8 +11,8 @@ using Action = Lumina.Excel.GeneratedSheets.Action;
 namespace RemindMe {
     public class IconManager : IDisposable {
         private bool disposed;
-        private readonly Dictionary<ushort, TextureWrap> iconTextures = new Dictionary<ushort, TextureWrap>();
-        private readonly Dictionary<uint, ushort> actionCustomIcons = new Dictionary<uint, ushort>() {
+        private readonly Dictionary<uint, TextureWrap> iconTextures = new Dictionary<uint, TextureWrap>();
+        private readonly Dictionary<uint, uint> actionCustomIcons = new Dictionary<uint, uint>() {
             {3, 104}, // Sprint 
         };
 
@@ -29,7 +29,7 @@ namespace RemindMe {
             iconTextures.Clear();
         }
         
-        private void LoadIconTexture(ushort iconId) {
+        private void LoadIconTexture(uint iconId) {
             Task.Run(() => {
                 try {
                     var iconTex = Service.Data.GetIcon(iconId);
@@ -51,11 +51,11 @@ namespace RemindMe {
             return GetIconTexture(actionCustomIcons.ContainsKey(action.RowId) ? actionCustomIcons[action.RowId] : action.Icon);
         }
 
-        public ushort GetActionIconId(Action action) {
+        public uint GetActionIconId(Action action) {
             return actionCustomIcons.ContainsKey(action.RowId) ? actionCustomIcons[action.RowId] : action.Icon;
         }
 
-        public TextureWrap GetIconTexture(ushort iconId) {
+        public TextureWrap GetIconTexture(uint iconId) {
             if (this.disposed) return null;
             if (this.iconTextures.ContainsKey(iconId)) return this.iconTextures[iconId];
             this.iconTextures.Add(iconId, null);

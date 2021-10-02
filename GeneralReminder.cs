@@ -26,7 +26,7 @@ namespace RemindMe {
             return false;
         }
 
-        public virtual ushort GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
+        public virtual uint GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             return 0;
         }
 

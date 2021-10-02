@@ -22,7 +22,7 @@ namespace RemindMe.Reminder {
                    Service.ClientState.LocalPlayer.StatusList.All(s => s.StatusId != 103 && s.StatusId != 104 && s.StatusId != 105);
         }
 
-        public override ushort GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
+        public override uint GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             try {
                 return Service.Data.Excel.GetSheet<Action>().GetRow(Service.ClientState.LocalPlayer.Level >= 40 ? 63U : 60U).Icon;
             } catch {

@@ -79,7 +79,7 @@ namespace RemindMe.Reminder {
             return count > 0;
         }
 
-        public override ushort GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
+        public override uint GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             return 60; //60840;
         }
 
