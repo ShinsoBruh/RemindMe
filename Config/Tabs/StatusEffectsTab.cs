@@ -53,6 +53,7 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(1179, 10, selfOnly: true); // Riddle of Earth
                         StatusMonitorConfigDisplay(1181, 10, selfOnly: true); // Riddle of Fire
                         StatusMonitorConfigDisplay(246, 18, alwaysAvailable: true, minLevel: 30); // Demolish
+                        MeleeRoleEffects();
                         break;
                     }
                 case 21: {
@@ -75,6 +76,7 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(1864, 20); // Lance Charge
                         StatusMonitorConfigDisplay(1914, 30, alwaysAvailable: true, minLevel: 18); // Disembowment
                         StatusMonitorConfigDisplay(118, 24, alwaysAvailable: true, minLevel: 50); // Chaos Thrust
+                        MeleeRoleEffects();
                         break;
                     }
                 case 5:
@@ -138,6 +140,7 @@ namespace RemindMe {
                         // NIN
                         StatusMonitorConfigDisplay(508, 30); // Shadow Fang
                         StatusMonitorConfigDisplay(1955, 15, selfOnly: true); // Assassinate Ready
+                        MeleeRoleEffects();
                         break;
                     }
                 case 31: {
@@ -182,6 +185,7 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(1228, 60, alwaysAvailable: true, minLevel: 30); // Higanbana
                         StatusMonitorConfigDisplay(1298, 40, selfOnly: true, alwaysAvailable: true, minLevel: 4); // Jinpu
                         StatusMonitorConfigDisplay(1299, 40, selfOnly: true, alwaysAvailable: true, minLevel: 18); // Shifu
+                        MeleeRoleEffects();
                         break;
                     }
                 case 35:
@@ -258,6 +262,13 @@ namespace RemindMe {
             StatusMonitorConfigDisplay(2, 5, note: "from Low Blow"); // Low Blow Stun
             StatusMonitorConfigDisplay(1191, 20, selfOnly: true); // Rampart
             StatusMonitorConfigDisplay(1193, 10); // Reprisal
+        }
+
+        private void MeleeRoleEffects() {
+            StatusMonitorConfigDisplay(84, 20, selfOnly: true); // Bloodbath
+            StatusMonitorConfigDisplay(1195, 10); // Feint
+            StatusMonitorConfigDisplay(1209, 6, selfOnly: true); // Arm's Length
+            StatusMonitorConfigDisplay(1250, 10, selfOnly: true); // True North
         }
     }
 
