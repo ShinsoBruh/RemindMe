@@ -48,6 +48,10 @@ namespace RemindMe {
                 }
                 case 20: {
                         // MNK
+                        StatusMonitorConfigDisplay(101, 15, alwaysAvailable: true, minLevel: 18, selfOnly: true); // Twin Snakes
+                        StatusMonitorConfigDisplay(1861, 30, selfOnly: true); // Leaden Fist
+                        StatusMonitorConfigDisplay(1179, 10, selfOnly: true); // Riddle of Earth
+                        StatusMonitorConfigDisplay(1181, 10, selfOnly: true); // Riddle of Fire
                         StatusMonitorConfigDisplay(246, 18, alwaysAvailable: true, minLevel: 30); // Demolish
                         break;
                     }
