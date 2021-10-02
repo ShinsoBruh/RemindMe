@@ -28,7 +28,7 @@ namespace RemindMe {
                 ImGui.SetColumnWidth(i, 100);
             }
 
-            StatusMonitorConfigDisplay(638, 15, raid: true, note: pluginInterface.Data.GetExcelSheet<Action>().GetRow(2258)?.Name); // Target / Trick Attack (NIN)
+            StatusMonitorConfigDisplay(638, 15, raid: true, note: Service.Data.GetExcelSheet<Action>().GetRow(2258)?.Name); // Target / Trick Attack (NIN)
 
             StatusMonitorConfigDisplay(1221, 15, raid: true); // Target / Chain Stratagem (SCH)
             
@@ -36,7 +36,7 @@ namespace RemindMe {
 
             StatusMonitorConfigDisplay(786, 20, raid: true, selfOnly: true); // Player / Battle Litany (DRG)
 
-            StatusMonitorConfigDisplay(1184, 20, raid: true, selfOnly: true, note: pluginInterface.Data.GetExcelSheet<Action>().GetRow(7398)?.Name); // Player / Dragon Sight (DRG)
+            StatusMonitorConfigDisplay(1184, 20, raid: true, selfOnly: true, note: Service.Data.GetExcelSheet<Action>().GetRow(7398)?.Name); // Player / Dragon Sight (DRG)
 
             StatusMonitorConfigDisplay(1185, 20, raid: true, selfOnly: true); // Player / Brotherhood (MNK)
 

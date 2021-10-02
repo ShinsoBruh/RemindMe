@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Dalamud.Game.ClientState.Actors.Types;
+﻿using System.Collections.Generic;
+using Dalamud.Game.ClientState.Objects.Types;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
 
@@ -42,8 +40,8 @@ namespace RemindMe.Config {
         }
 
         public void ClickHandler(RemindMe plugin, object param) {
-            if (param is Actor a) {
-                plugin.PluginInterface.ClientState.Targets.SetCurrentTarget(a);
+            if (param is GameObject a) {
+                Service.Targets.SetTarget(a);
             }
         }
     }

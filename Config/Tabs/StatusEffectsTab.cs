@@ -28,7 +28,7 @@ namespace RemindMe {
             for (var i = 1; i <= MonitorDisplays.Values.Count(d => d.Enabled); i++) {
                 ImGui.SetColumnWidth(i, 100);
             }
-            switch (pluginInterface.ClientState.LocalPlayer.ClassJob.Id) {
+            switch (Service.ClientState.LocalPlayer.ClassJob.Id) {
                 case 19: {
                         // PLD
                         StatusMonitorConfigDisplay(76, 25, selfOnly: true); // Fight or Flight
@@ -80,7 +80,7 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(122, 10, selfOnly: true); // Straight Shot Ready
                         StatusMonitorConfigDisplay(124, 30, alwaysAvailable: true, minLevel: 6, maxLevel: 63); // Venomous Bite
                         StatusMonitorConfigDisplay(129, 30, alwaysAvailable: true, minLevel: 30, maxLevel: 63); // Windbite
-                        if (pluginInterface.ClientState.LocalPlayer.ClassJob.Id == 5) break;
+                        if (Service.ClientState.LocalPlayer.ClassJob.Id == 5) break;
                         StatusMonitorConfigDisplay(1200, 30, alwaysAvailable: true, minLevel: 64); // Causic Bite
                         StatusMonitorConfigDisplay(1201, 30, alwaysAvailable: true, minLevel: 64); // Stormbite
                         break;
@@ -218,14 +218,14 @@ namespace RemindMe {
                     }
                 default: {
                         ImGui.Columns(1);
-                        ImGui.TextWrapped($"No status monitors are available on {pluginInterface.ClientState.LocalPlayer.ClassJob.GameData.Name}.");
+                        ImGui.TextWrapped($"No status monitors are available on {Service.ClientState.LocalPlayer.ClassJob.GameData.Name}.");
                         break;
                     }
             }
 
             var oldMonitors = new List<StatusMonitor>();
             foreach (var m in MonitorDisplays.Values.Where(t => t.Enabled)) {
-                foreach (var sm in m.StatusMonitors.Where(s => s.IsRaid == false && s.ClassJob == pluginInterface.ClientState.LocalPlayer.ClassJob.Id && !visibleStatusMonitor.Contains(s))) {
+                foreach (var sm in m.StatusMonitors.Where(s => s.IsRaid == false && s.ClassJob == Service.ClientState.LocalPlayer.ClassJob.Id && !visibleStatusMonitor.Contains(s))) {
                     oldMonitors.Add(sm);
                 }
             }

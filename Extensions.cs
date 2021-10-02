@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.Actors.Types;
-using Lumina.Excel.GeneratedSheets;
+﻿using Lumina.Excel.GeneratedSheets;
 
 namespace RemindMe {
     public static class Extensions {

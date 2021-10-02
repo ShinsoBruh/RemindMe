@@ -2,24 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dalamud.Data.LuminaExtensions;
+using Dalamud.Logging;
 using Dalamud.Plugin;
+using Dalamud.Utility;
 using ImGuiScene;
 using Action = Lumina.Excel.GeneratedSheets.Action;
 
 namespace RemindMe {
     public class IconManager : IDisposable {
-
-        private readonly DalamudPluginInterface pluginInterface;
         private bool disposed;
         private readonly Dictionary<ushort, TextureWrap> iconTextures = new Dictionary<ushort, TextureWrap>();
         private readonly Dictionary<uint, ushort> actionCustomIcons = new Dictionary<uint, ushort>() {
             {3, 104}, // Sprint 
         };
-
-        public IconManager(DalamudPluginInterface pluginInterface) {
-            this.pluginInterface = pluginInterface;
-        }
 
         public void Dispose() {
             disposed = true;
@@ -37,9 +32,9 @@ namespace RemindMe {
         private void LoadIconTexture(ushort iconId) {
             Task.Run(() => {
                 try {
-                    var iconTex = pluginInterface.Data.GetIcon(iconId);
+                    var iconTex = Service.Data.GetIcon(iconId);
 
-                    var tex = pluginInterface.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(), iconTex.Header.Width, iconTex.Header.Height, 4);
+                    var tex = Service.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(), iconTex.Header.Width, iconTex.Header.Height, 4);
 
                     if (tex.ImGuiHandle != IntPtr.Zero) {
                         this.iconTextures[iconId] = tex;

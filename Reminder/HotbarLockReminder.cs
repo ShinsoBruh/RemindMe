@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using RemindMe.Config;
 
 namespace RemindMe.Reminder {
-    internal class HotbarLockReminder : GeneralReminder {
+    internal unsafe class HotbarLockReminder : GeneralReminder {
 
         [JsonIgnore]
         public override string Name => "Hotbar Lock Reminder";
@@ -19,7 +19,7 @@ namespace RemindMe.Reminder {
         }
 
         public override bool ShouldShow(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
-            var actionBar = pluginInterface.Framework.Gui.GetUiObjectByName("_ActionBar", 1);
+            var actionBar = Service.GameGui.GetAddonByName("_ActionBar", 1);
             if (actionBar == IntPtr.Zero) return false;
             return Marshal.ReadByte(actionBar, 0x23F) == 0;
         }

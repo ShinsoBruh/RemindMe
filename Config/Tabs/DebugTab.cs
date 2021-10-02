@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Numerics;
+using Dalamud.Game.ClientState.Objects.Types;
 using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 
@@ -8,29 +9,31 @@ namespace RemindMe {
     public partial class RemindMeConfig{
         public void DrawDebugTab() {
             try {
-                ImGui.Text($"Current ClassJobID: {pluginInterface.ClientState.LocalPlayer.ClassJob.Id}");
-                ImGui.Text($"Current Level: {pluginInterface.ClientState.LocalPlayer.Level}");
+                ImGui.Text($"Current ClassJobID: {Service.ClientState.LocalPlayer.ClassJob.Id}");
+                ImGui.Text($"Current Level: {Service.ClientState.LocalPlayer.Level}");
                 ImGui.Text($"In PvP: {plugin.InPvP}");
                 ImGui.Text($"Not In Combat for: {plugin.OutOfCombatTimer.Elapsed.TotalSeconds} seconds.");
 
-                if (pluginInterface.ClientState.Targets.CurrentTarget != null) {
+                if (Service.Targets.Target is BattleChara battleChara) {
                     ImGui.Text("\nEffects on Target: ");
-                    foreach (var se in pluginInterface.ClientState.Targets.CurrentTarget.StatusEffects) {
-                        if (se.EffectId <= 0) continue;
-                        var status = pluginInterface.Data.Excel.GetSheet<Status>().GetRow((uint)se.EffectId);
-                        ImGui.Text($"\t{status.Name}: {status.RowId}  [{se.Param}, {se.Duration}]");
+                    foreach (var se in battleChara.StatusList) {
+                        if (se.StatusId <= 0) continue;
+                        var status = Service.Data?.Excel.GetSheet<Status>()?.GetRow(se.StatusId);
+                        if (status == null) continue;
+                        ImGui.Text($"\t{status.Name}: {status.RowId}  [{se.Param}, {se.RemainingTime}]");
                     }
                 }
 
 
                 ImGui.Text("\nEffects on Self: ");
-                foreach (var se in pluginInterface.ClientState.LocalPlayer.StatusEffects) {
-                    if (se.EffectId <= 0) continue;
-                    var status = pluginInterface.Data.Excel.GetSheet<Status>().GetRow((uint)se.EffectId);
-                    ImGui.Text($"\t{status.Name}: {status.RowId}  [{se.Param}, {se.Duration}]");
+                foreach (var se in Service.ClientState.LocalPlayer.StatusList) {
+                    if (se.StatusId <= 0) continue;
+                    var status = Service.Data?.Excel.GetSheet<Status>()?.GetRow(se.StatusId);
+                    if (status == null) continue;
+                    ImGui.Text($"\t{status.Name}: {status.RowId}  [{se.Param}, {se.RemainingTime}]");
                 }
 
-                var lastAction = pluginInterface.Data.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>().GetRow(plugin.ActionManager.LastActionId);
+                var lastAction = Service.Data?.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?.GetRow(plugin.ActionManager.LastActionId);
                 ImGui.Text(lastAction != null ? $"\nLast Action: [{lastAction.RowId}] {lastAction.Name}" : $"\nLast Action: [{plugin.ActionManager.LastActionId}] Unknown");
 
                 if (lastAction != null) {

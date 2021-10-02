@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 using ImGuiNET;
 using RemindMe.Config;
@@ -27,7 +28,7 @@ namespace RemindMe {
                 ImGui.Checkbox("###showGCDCheckbox", ref showGlobalCooldowns);
                 ImGui.SetWindowFontScale(1);
 
-                if (pluginInterface.ClientState.LocalPlayer.ClassJob.Id == 36) {
+                if (Service.ClientState.LocalPlayer.ClassJob.Id == 36) {
                     ImGui.Text("Show All BLU Spells");
                     ImGui.SameLine();
                     ImGui.SetWindowFontScale(0.7f);
@@ -52,11 +53,11 @@ namespace RemindMe {
                     ImGui.SetColumnWidth(i, 100);
                 }
                 var gcdTextSize = ImGui.CalcTextSize("[GCD]");
-                foreach (var a in plugin.ActionManager.PlayerActions.Where(a => !hiddenActions.Contains(a.RowId) && (showGlobalCooldowns || a.CooldownGroup != GlobalCooldownGroup || MonitorDisplays.Any(d => d.Value.Cooldowns.Any(c => c.ActionId == a.RowId && c.ClassJob == pluginInterface.ClientState.LocalPlayer.ClassJob.Id))) && a.IsPvP == false && a.ClassJobCategory.Value.HasClass(pluginInterface.ClientState.LocalPlayer.ClassJob.Id))) {
+                foreach (var a in plugin.ActionManager.PlayerActions.Where(a => !hiddenActions.Contains(a.RowId) && (showGlobalCooldowns || a.CooldownGroup != GlobalCooldownGroup || MonitorDisplays.Any(d => d.Value.Cooldowns.Any(c => c.ActionId == a.RowId && c.ClassJob == Service.ClientState.LocalPlayer.ClassJob.Id))) && a.IsPvP == false && a.ClassJobCategory.Value.HasClass(Service.ClientState.LocalPlayer.ClassJob.Id))) {
                     if (allBluSpells == false && a.ClassJob.Row == 36) {
                         if (!plugin.BlueMagicSpellbook.Contains(a.RowId)) continue;
                     }
-                    var cdm = new CooldownMonitor { ActionId = a.RowId, ClassJob = pluginInterface.ClientState.LocalPlayer.ClassJob.Id };
+                    var cdm = new CooldownMonitor { ActionId = a.RowId, ClassJob = Service.ClientState.LocalPlayer.ClassJob.Id };
 
                     var icon = plugin.IconManager.GetActionIcon(a);
                     if (icon != null) {
