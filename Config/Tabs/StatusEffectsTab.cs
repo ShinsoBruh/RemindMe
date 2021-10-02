@@ -60,9 +60,9 @@ namespace RemindMe {
                         StatusMonitorConfigDisplay(409, 8, selfOnly: true); // Holmgang
                         StatusMonitorConfigDisplay(735, 6); // Raw Intuition
                         StatusMonitorConfigDisplay(1457, 15); // Shake it Off
+                        StatusMonitorConfigDisplay(1177, 10, selfOnly: true); // Inner Release
 
                         // TODO: Obtain Ability IDs
-                        // StatusMonitorConfigDisplay(xxx, 10); // Inner Release (Possibly same buff as Berserk?)
                         // StatusMonitorConfigDisplay(xxx, 6); // Nascent Flash
 
                         tankRoleEffects();
