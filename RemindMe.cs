@@ -243,7 +243,7 @@ namespace RemindMe {
                         if (action != null) {
                             var cooldown = ActionManager.GetActionCooldown(action);
                             timerList.Add(new DisplayTimer {
-                                TimerMax = cooldown.CooldownTotal,
+                                TimerMax = cooldown.CooldownMax,
                                 TimerCurrent = cooldown.CooldownElapsed + cooldown.CompleteFor,
                                 FinishedColor = display.AbilityReadyColor,
                                 ProgressColor = display.AbilityCooldownColor,

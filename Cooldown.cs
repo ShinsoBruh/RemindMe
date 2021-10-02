@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ImGuiScene;
+using static FFXIVClientStructs.FFXIV.Client.Game.ActionManager;
 using Action =  Lumina.Excel.GeneratedSheets.Action;
 
 namespace RemindMe {
@@ -56,13 +57,17 @@ namespace RemindMe {
 
         public float CooldownElapsed => cooldownStruct.CooldownElapsed;
 
-        public float Countdown => cooldownStruct.CooldownTotal - cooldownStruct.CooldownElapsed;
+        public float Countdown => CooldownMax - cooldownStruct.CooldownElapsed;
 
         public long CountdownTicks => (long) Countdown * 10000000;
 
         public float CooldownTotal => cooldownStruct.CooldownTotal;
 
-        public float CooldownFraction => cooldownStruct.CooldownTotal <= 0 ? 1 : (cooldownStruct.CooldownElapsed / cooldownStruct.CooldownTotal);
+        public float ChargesMultiplier => GetMaxCharges(ActionID, 0) / (float)GetMaxCharges(ActionID, 80);
+
+        public float CooldownMax => CooldownTotal * ChargesMultiplier;
+
+        public float CooldownFraction => Countdown <= 0 ? 1 : (cooldownStruct.CooldownElapsed / CooldownMax);
 
         public float CompleteFor => IsOnCooldown ? 0 : readyStopwatch.ElapsedMilliseconds / 1000f;
 

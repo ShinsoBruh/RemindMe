@@ -6,7 +6,10 @@ using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 
 namespace RemindMe {
-    public partial class RemindMeConfig{
+    public partial class RemindMeConfig {
+
+        private int selectValue = 80;
+
         public void DrawDebugTab() {
             try {
                 ImGui.Text($"Current ClassJobID: {Service.ClientState.LocalPlayer.ClassJob.Id}");
@@ -41,8 +44,11 @@ namespace RemindMe {
                     ImGui.InputText("Cooldown Ptr", ref ptr, 16, ImGuiInputTextFlags.ReadOnly);
                 }
 
-                ImGui.Text($"Last Action Max Charges: {lastAction.MaxCharges}");
-
+                if (lastAction != null) {
+                    var maxCharges0 = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.GetMaxCharges(lastAction.RowId, 0);
+                    var maxCharges80 = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.GetMaxCharges(lastAction.RowId, 80);
+                    ImGui.Text($"Last Action Max Charges\n\tData Sheet: {lastAction.MaxCharges}\n\tCurrent Level: {maxCharges0}\n\tLevel 80: {maxCharges80}");
+                }
 
                 // Bars
 
