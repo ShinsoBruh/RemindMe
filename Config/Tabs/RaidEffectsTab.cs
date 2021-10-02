@@ -53,6 +53,9 @@ namespace RemindMe {
             StatusMonitorConfigDisplay(1876, 20, raid: true, selfOnly: true, statusList: new uint[] { 1882, 1884, 1885 }, forcedName: "Melee Cards"); // Player / Balance (AST)
             StatusMonitorConfigDisplay(1877, 20, raid: true, selfOnly: true, statusList: new uint[] { 1883, 1886, 1887 }, forcedName: "Ranged Cards"); // Player / Bole (AST)
 
+            StatusMonitorConfigDisplay(194, 10, raid: true, selfOnly: true, forcedName: "Tank LB1");
+            StatusMonitorConfigDisplay(195, 12, raid: true, selfOnly: true, forcedName: "Tank LB2");
+            StatusMonitorConfigDisplay(196, 8, raid: true, selfOnly: true, statusList: new uint[] {863, 864, 1931}, forcedName: "Tank LB3", singleIcon: true);
 
             if (ImGui.TreeNode($"Blue Mage Effects")) {
                 while (ImGui.GetColumnIndex() != 0) ImGui.NextColumn();

@@ -10,6 +10,7 @@ namespace RemindMe.Config {
         public bool SelfOnly = false;
         public bool IsRaid = false;
         public bool Stacking = false;
+        public bool SingleIcon = false;
         public float MaxDuration = 30;
         public ushort LimitedZone = 0;
         public bool AlwaysAvailable = false;

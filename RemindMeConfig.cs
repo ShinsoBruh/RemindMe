@@ -137,7 +137,7 @@ namespace RemindMe
                 ImGui.SetTooltip(status.Description);
             }
 
-            if (statusMonitor.StatusList != null) {
+            if (statusMonitor.StatusList != null && statusMonitor.SingleIcon == false) {
                 foreach (var s in statusMonitor.StatusList) {
                     ImGui.SameLine();
                     ImGui.SetCursorPosX(ImGui.GetCursorPosX() - 10);
@@ -197,10 +197,10 @@ namespace RemindMe
             ImGui.Separator();
         }
         
-        private void StatusMonitorConfigDisplay(uint statusId, float maxDuration, string note = null, bool raid = false, bool selfOnly = false, uint[] statusList = null, string forcedName = null, ushort limitedZone = 0, bool stacking = false, bool alwaysAvailable = false, byte minLevel = byte.MinValue, byte maxLevel = byte.MaxValue) {
+        private void StatusMonitorConfigDisplay(uint statusId, float maxDuration, string note = null, bool raid = false, bool selfOnly = false, uint[] statusList = null, string forcedName = null, ushort limitedZone = 0, bool stacking = false, bool alwaysAvailable = false, byte minLevel = byte.MinValue, byte maxLevel = byte.MaxValue, bool singleIcon = false) {
             var status = Service.Data.GetExcelSheet<Status>().GetRow(statusId);
             if (status == null) return;
-            var statusMonitor = new StatusMonitor {Status = status.RowId, ClassJob = Service.ClientState.LocalPlayer.ClassJob.Id, MaxDuration = maxDuration, SelfOnly = selfOnly, StatusList = statusList, IsRaid = raid, LimitedZone = limitedZone, Stacking = stacking, AlwaysAvailable = alwaysAvailable, MinLevel = minLevel, MaxLevel = maxLevel};
+            var statusMonitor = new StatusMonitor {Status = status.RowId, ClassJob = Service.ClientState.LocalPlayer.ClassJob.Id, MaxDuration = maxDuration, SelfOnly = selfOnly, StatusList = statusList, IsRaid = raid, LimitedZone = limitedZone, Stacking = stacking, AlwaysAvailable = alwaysAvailable, MinLevel = minLevel, MaxLevel = maxLevel, SingleIcon = singleIcon};
             StatusMonitorConfigDisplay(statusMonitor, status, forcedName, note);
         }
 
