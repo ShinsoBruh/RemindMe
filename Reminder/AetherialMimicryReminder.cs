@@ -19,13 +19,12 @@ namespace RemindMe.Reminder {
 
         public override bool ShouldShow(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display)
         {
-            return pluginInterface.ClientState.LocalPlayer.ClassJob.Id == 36 &&
-                   pluginInterface.ClientState.LocalPlayer.StatusEffects.All(s => s.EffectId != 2124 && s.EffectId != 2125 && s.EffectId != 2126);
+            return Service.ClientState.LocalPlayer is not null && Service.ClientState.LocalPlayer.ClassJob.Id == 36 && Service.ClientState.LocalPlayer.StatusList.All(s => s.StatusId != 2124 && s.StatusId != 2125 && s.StatusId != 2126);
         }
 
         public override ushort GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             try {
-                return pluginInterface.Data.Excel.GetSheet<Action>().GetRow(18322).Icon;
+                return Service.Data.Excel.GetSheet<Action>().GetRow(18322).Icon;
             } catch {
                 return 0;
             }

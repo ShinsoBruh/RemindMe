@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Game.ClientState.Actors.Types;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin;
 using Newtonsoft.Json;
 using RemindMe.Config;
@@ -28,7 +28,7 @@ namespace RemindMe.Reminder {
 
         public override string GetText(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             try {
-                var action = pluginInterface.Data.Excel.GetSheet<Action>().GetRow(TankStanceActions[pluginInterface.ClientState.LocalPlayer.ClassJob.Id]);
+                var action = Service.Data.Excel.GetSheet<Action>().GetRow(TankStanceActions[Service.ClientState.LocalPlayer.ClassJob.Id]);
                 return $"Tank Stance: {action.Name}";
             } catch {
                 return "Tank Stance";
@@ -37,16 +37,16 @@ namespace RemindMe.Reminder {
 
         public override bool ShouldShow(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             try {
-                if (pluginInterface.ClientState.LocalPlayer.ClassJob.GameData.Role != 1) return false;
+                if (Service.ClientState.LocalPlayer.ClassJob.GameData.Role != 1) return false;
                 // Check have stance
-                if (pluginInterface.ClientState.LocalPlayer.StatusEffects.Any(s => tankStatusEffectIDs.Contains((uint) s.EffectId))) return false;
+                if (Service.ClientState.LocalPlayer.StatusList.Any(s => tankStatusEffectIDs.Contains(s.StatusId))) return false;
                 // Check other tanks have stance
 
 
-                foreach (var a in pluginInterface.ClientState.Actors) {
+                foreach (var a in Service.Objects) {
                     if (!(a is PlayerCharacter pc)) continue;
-                    if (pc.ClassJob.GameData.Role != 1 || pc.ActorId == pluginInterface.ClientState.LocalPlayer.ActorId) continue;
-                    if (pc.StatusEffects.Any(s => tankStatusEffectIDs.Contains((uint) s.EffectId))) return false;
+                    if (pc.ClassJob.GameData.Role != 1 || pc.ObjectId == Service.ClientState.LocalPlayer.ObjectId) continue;
+                    if (pc.StatusList.Any(s => tankStatusEffectIDs.Contains(s.StatusId))) return false;
                 }
                 return true;
             } catch {
@@ -57,7 +57,7 @@ namespace RemindMe.Reminder {
 
         public override ushort GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             try {
-                var action = pluginInterface.Data.Excel.GetSheet<Action>().GetRow(TankStanceActions[pluginInterface.ClientState.LocalPlayer.ClassJob.Id]);
+                var action = Service.Data.Excel.GetSheet<Action>().GetRow(TankStanceActions[Service.ClientState.LocalPlayer.ClassJob.Id]);
                 return action.Icon;
             } catch {
                 return 0;

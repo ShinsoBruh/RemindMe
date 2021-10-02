@@ -18,14 +18,14 @@ namespace RemindMe.Reminder {
         }
 
         public override bool ShouldShow(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
-            return pluginInterface.ClientState.LocalPlayer.ClassJob.Id == 38  && 
-                   pluginInterface.ClientState.LocalPlayer.Level >= 60 && 
-                   pluginInterface.ClientState.LocalPlayer.StatusEffects.All(s => s.EffectId != 1823);
+            return Service.ClientState.LocalPlayer.ClassJob.Id == 38  &&
+                   Service.ClientState.LocalPlayer.Level >= 60 &&
+                   Service.ClientState.LocalPlayer.StatusList.All(s => s.StatusId != 1823);
         }
 
         public override ushort GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             try {
-                return pluginInterface.Data.Excel.GetSheet<Action>().GetRow(16006).Icon;
+                return Service.Data.Excel.GetSheet<Action>().GetRow(16006).Icon;
             } catch {
                 return 0;
             }

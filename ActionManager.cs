@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Dalamud.Data.LuminaExtensions;
-using Dalamud.Game.Internal;
+using Dalamud.Game;
 using Dalamud.Hooking;
+using Dalamud.Utility;
 using ImGuiScene;
 using JetBrains.Annotations;
 using Action = Lumina.Excel.GeneratedSheets.Action;
@@ -31,11 +31,11 @@ namespace RemindMe {
         [UnmanagedFunctionPointer(CallingConvention.ThisCall)]
         private delegate IntPtr GetActionCooldownSlotDelegate(IntPtr actionManager, int cooldownGroup);
 
-        public IEnumerable<Action> PlayerActions => plugin.PluginInterface.Data.Excel.GetSheet<Action>().Where(a => a.IsPlayerAction || forcedActionIds.Contains(a.RowId));
+        public IEnumerable<Action> PlayerActions => Service.Data.Excel.GetSheet<Action>().Where(a => a.IsPlayerAction || forcedActionIds.Contains(a.RowId));
 
         internal TextureWrap GetActionIcon(Action action) {
-            var iconTex = plugin.PluginInterface.Data.GetIcon(action.Icon);
-            var tex = plugin.PluginInterface.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(), iconTex.Header.Width, iconTex.Header.Height, 4);
+            var iconTex = Service.Data.GetIcon(action.Icon);
+            var tex = Service.UiBuilder.LoadImageRaw(iconTex.GetRgbaImageData(), iconTex.Header.Width, iconTex.Header.Height, 4);
             if (tex != null && tex.ImGuiHandle != IntPtr.Zero) {
                 return tex;
             }
@@ -48,18 +48,18 @@ namespace RemindMe {
             this.actionManagerPtr = actionManagerPtr;
             this.plugin = plugin;
 
-            var isActionCooldownScan = plugin.PluginInterface.TargetModuleScanner.ScanText("E8 ?? ?? ?? ?? 3C 01 74 45");
+            var isActionCooldownScan = Service.SigScanner.ScanText("E8 ?? ?? ?? ?? 3C 01 74 45");
             isActionCooldown = Marshal.GetDelegateForFunctionPointer<IsActionCooldownDelegate>(isActionCooldownScan);
 
-            var getActionCooldownSlotScan = plugin.PluginInterface.TargetModuleScanner.ScanText("E8 ?? ?? ?? ?? 0F 57 FF 48 85 C0");
+            var getActionCooldownSlotScan = Service.SigScanner.ScanText("E8 ?? ?? ?? ?? 0F 57 FF 48 85 C0");
             getActionCooldownSlot = Marshal.GetDelegateForFunctionPointer<GetActionCooldownSlotDelegate>(getActionCooldownSlotScan);
 #if DEBUG
-            var startActionCooldownScan = plugin.PluginInterface.TargetModuleScanner.ScanText("E8 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? FF 50 18");
+            var startActionCooldownScan = Service.SigScanner.ScanText("E8 ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? FF 50 18");
             startCooldownHook = new Hook<StartCooldownDelegate>(startActionCooldownScan, new StartCooldownDelegate(StartCooldownDetour));
 
             startCooldownHook.Enable();
 #endif
-            plugin.PluginInterface.Framework.OnUpdateEvent += FrameworkOnOnUpdateEvent;
+            Service.Framework.Update += FrameworkOnOnUpdateEvent;
         }
 
         private IntPtr StartCooldownDetour(IntPtr actionManager, uint actionType, uint actionId) {
@@ -69,7 +69,7 @@ namespace RemindMe {
 
         [CanBeNull]
         public Action GetAction(uint actionID, bool allowNonPlayer = false) {
-            return plugin.PluginInterface.Data.Excel.GetSheet<Action>().FirstOrDefault(a => a.RowId == actionID && (allowNonPlayer || a.IsPlayerAction || forcedActionIds.Contains(a.RowId)));
+            return Service.Data.Excel.GetSheet<Action>().FirstOrDefault(a => a.RowId == actionID && (allowNonPlayer || a.IsPlayerAction || forcedActionIds.Contains(a.RowId)));
         }
 
         private void FrameworkOnOnUpdateEvent(Framework framework) {
@@ -91,7 +91,7 @@ namespace RemindMe {
             startCooldownHook?.Disable();
             startCooldownHook?.Dispose();
 
-            plugin.PluginInterface.Framework.OnUpdateEvent -= FrameworkOnOnUpdateEvent;
+            Service.Framework.Update -= FrameworkOnOnUpdateEvent;
 
             foreach (var a in cooldownList) {
                 a.Value.Dispose();

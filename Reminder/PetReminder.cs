@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Game.ClientState.Actors;
-using Dalamud.Game.ClientState.Actors.Types.NonPlayer;
+using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
 using Newtonsoft.Json;
@@ -28,15 +28,15 @@ namespace RemindMe.Reminder {
         }
 
         public override bool ShouldShow(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
-            if (!petJobs.Contains(pluginInterface.ClientState.LocalPlayer.ClassJob.Id)) return false;
-            if (pluginInterface.ClientState.LocalPlayer.ClassJob.Id == 28 && plugin.ActorsWithStatus.ContainsKey(791) && plugin.ActorsWithStatus[791].Contains(pluginInterface.ClientState.LocalPlayer)) return false;
-            if (pluginInterface.ClientState.Actors.Any(a => a.ObjectKind == ObjectKind.BattleNpc && a is BattleNpc bNpc && bNpc.OwnerId == pluginInterface.ClientState.LocalPlayer.ActorId)) return false;
+            if (!petJobs.Contains(Service.ClientState.LocalPlayer.ClassJob.Id)) return false;
+            if (Service.ClientState.LocalPlayer.ClassJob.Id == 28 && plugin.ActorsWithStatus.ContainsKey(791) && plugin.ActorsWithStatus[791].Contains(Service.ClientState.LocalPlayer)) return false;
+            if (Service.Objects.Any(a => a.ObjectKind == ObjectKind.BattleNpc && a is BattleNpc bNpc && bNpc.OwnerId == Service.ClientState.LocalPlayer.ObjectId)) return false;
             return true;
         }
 
         public override ushort GetIconID(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             try {
-                var action = pluginInterface.Data.Excel.GetSheet<Action>().GetRow(petIcons[pluginInterface.ClientState.LocalPlayer.ClassJob.Id]);
+                var action = Service.Data.Excel.GetSheet<Action>().GetRow(petIcons[Service.ClientState.LocalPlayer.ClassJob.Id]);
                 return action.Icon;
             } catch {
                 return 0;

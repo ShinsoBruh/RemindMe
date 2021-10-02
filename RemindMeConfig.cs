@@ -18,9 +18,6 @@ namespace RemindMe
         [NonSerialized] private float debugFraction = 0;
 
         [NonSerialized]
-        private DalamudPluginInterface pluginInterface;
-
-        [NonSerialized]
         private RemindMe plugin;
 
         public int Version { get; set; } = 2;
@@ -39,10 +36,9 @@ namespace RemindMe
 
         public RemindMeConfig() { }
 
-        public void Init(RemindMe plugin, DalamudPluginInterface pluginInterface)
+        public void Init(RemindMe plugin)
         {
             this.plugin = plugin;
-            this.pluginInterface = pluginInterface;
             foreach (var t in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(GeneralReminder)))) {
                 GeneralReminders.Add((GeneralReminder) Activator.CreateInstance(t));
             }
@@ -62,7 +58,7 @@ namespace RemindMe
 
         public void Save()
         {
-            pluginInterface.SavePluginConfig(this);
+            Service.PluginInterface.SavePluginConfig(this);
         }
         
         public bool DrawConfigUI() {
@@ -126,7 +122,7 @@ namespace RemindMe
         }
 
         private void StatusMonitorConfigDisplay(StatusMonitor statusMonitor, Status status = null, string forcedName = null, string note = null, bool removeOnly = false) {
-            status ??= pluginInterface.Data.GetExcelSheet<Status>().GetRow(statusMonitor.Status);
+            status ??= Service.Data.GetExcelSheet<Status>().GetRow(statusMonitor.Status);
             if (status == null) return;
             
             if (!visibleStatusMonitor.Contains(statusMonitor)) visibleStatusMonitor.Add(statusMonitor);
@@ -145,7 +141,7 @@ namespace RemindMe
                 foreach (var s in statusMonitor.StatusList) {
                     ImGui.SameLine();
                     ImGui.SetCursorPosX(ImGui.GetCursorPosX() - 10);
-                    var extraStatus = pluginInterface.Data.GetExcelSheet<Status>().GetRow(s);
+                    var extraStatus = Service.Data.GetExcelSheet<Status>().GetRow(s);
                     if (extraStatus == null) continue;
                     var extraStatusIcon = plugin.IconManager.GetIconTexture(extraStatus.Icon);
                     if (extraStatusIcon == null) continue;
@@ -202,9 +198,9 @@ namespace RemindMe
         }
         
         private void StatusMonitorConfigDisplay(uint statusId, float maxDuration, string note = null, bool raid = false, bool selfOnly = false, uint[] statusList = null, string forcedName = null, ushort limitedZone = 0, bool stacking = false, bool alwaysAvailable = false, byte minLevel = byte.MinValue, byte maxLevel = byte.MaxValue) {
-            var status = pluginInterface.Data.GetExcelSheet<Status>().GetRow(statusId);
+            var status = Service.Data.GetExcelSheet<Status>().GetRow(statusId);
             if (status == null) return;
-            var statusMonitor = new StatusMonitor {Status = status.RowId, ClassJob = pluginInterface.ClientState.LocalPlayer.ClassJob.Id, MaxDuration = maxDuration, SelfOnly = selfOnly, StatusList = statusList, IsRaid = raid, LimitedZone = limitedZone, Stacking = stacking, AlwaysAvailable = alwaysAvailable, MinLevel = minLevel, MaxLevel = maxLevel};
+            var statusMonitor = new StatusMonitor {Status = status.RowId, ClassJob = Service.ClientState.LocalPlayer.ClassJob.Id, MaxDuration = maxDuration, SelfOnly = selfOnly, StatusList = statusList, IsRaid = raid, LimitedZone = limitedZone, Stacking = stacking, AlwaysAvailable = alwaysAvailable, MinLevel = minLevel, MaxLevel = maxLevel};
             StatusMonitorConfigDisplay(statusMonitor, status, forcedName, note);
         }
 

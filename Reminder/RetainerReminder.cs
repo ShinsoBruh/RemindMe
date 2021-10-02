@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Dalamud.Hooking;
+using Dalamud.Logging;
 using Dalamud.Plugin;
-using FFXIVClientInterface.Client.UI.Agent;
-using ImGuiNET;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using Newtonsoft.Json;
 using RemindMe.Config;
 
@@ -52,7 +53,7 @@ namespace RemindMe.Reminder {
         public override bool ShouldShow(DalamudPluginInterface pluginInterface, RemindMe plugin, MonitorDisplay display) {
             if (!_isSetup) {
                 try {
-                    _retainerContainer = (RetainerContainer*) pluginInterface.TargetModuleScanner.GetStaticAddressFromSig("48 8B E9 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 4E");
+                    _retainerContainer = (RetainerContainer*) Service.SigScanner.GetStaticAddressFromSig("48 8B E9 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 85 C0 74 4E");
                     PluginLog.Log($"RetainerContainer: {(ulong)_retainerContainer:X} - {(ulong)&_retainerContainer->Ready:X}");
                     _retainers = (Retainer*) _retainerContainer->Retainers;
                 } catch (Exception ex) {
@@ -90,8 +91,9 @@ namespace RemindMe.Reminder {
         public override void ClickHandler(RemindMe plugin, object param) {
             if (_retainers == null || _retainerContainer == null) return;
             if (_retainerContainer->Ready != 0) return;
-            var agent = RemindMe.Client.UiModule.AgentModule.GetAgent<AgentUnknown>();
-            ((delegate*<AgentUnknownStruct*, void*>) agent.Data->vfunc[2])(agent.Data);
+            var agent = Framework.Instance()->GetUiModule()->GetAgentModule()->GetAgentByInternalId(AgentId.ContentsTimer);
+            var vfunc = &agent->AtkEventInterface.vtbl;
+            ((delegate*<AgentInterface*, void*>) vfunc[2])(agent);
         }
     }
 }
