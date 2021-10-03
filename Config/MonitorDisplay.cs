@@ -28,7 +28,8 @@ namespace RemindMe.Config {
 
         [JsonIgnore]
         public TimeSpan CacheAge => cacheTimerListStopwatch.Elapsed;
-        
+        [JsonIgnore] public Vector2? LastPosition = null;
+        [JsonIgnore] public Vector2? LastSize = null;
         private static readonly string[] _displayTypes = new string[] {
             "Horizontal",
             "Vertical",
@@ -108,6 +109,19 @@ namespace RemindMe.Config {
 
         public int DisplayType = 0;
 
+        public class PositionOption {
+            public bool InvertSide = false;
+            public bool UsePercentage = false;
+            public float Percentage = 0;
+            public int Pixels = 0;
+        }
+
+        public bool UseFixedPosition = false;
+        public bool UseFixedSize = false;
+        public PositionOption HorizontalPosition = new PositionOption();
+        public PositionOption VerticalPosition = new PositionOption();
+        public Vector2 FixedSize = new Vector2(200, 200);
+
         [JsonIgnore] private bool tryDelete;
         [JsonIgnore] private bool tryCopy;
         [JsonIgnore] internal bool IsClickableHovered;
@@ -171,6 +185,103 @@ namespace RemindMe.Config {
 
             ImGui.Separator();
             ImGui.Separator();
+
+            ImGui.Text("Size and Position");
+            ImGui.Separator();
+
+
+
+            if (ImGui.Checkbox($"Use Fixed Size##{Guid}", ref UseFixedSize)) mainConfig.Save();
+
+            if (UseFixedSize) {
+                if (ImGui.DragFloat2($"##fixedSize##{Guid}", ref FixedSize)) mainConfig.Save();
+            } else {
+                ImGui.DragFloat2($"##fixedSize##{Guid}", ref FixedSize);
+                if (LastSize != null) {
+                    FixedSize = LastSize.Value;
+                }
+            }
+
+
+            if (ImGui.Checkbox($"Use Fixed Position##{Guid}", ref UseFixedPosition)) mainConfig.Save();
+
+            bool PositionEditor(bool vertical, string name, string normal, string inverted) {
+                var positionOption = vertical ? VerticalPosition : HorizontalPosition;
+                var r = false;
+
+                ImGui.Text($"{name}:");
+                ImGui.Indent();
+
+                ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
+                ImGui.PushStyleVar(ImGuiStyleVar.FrameRounding, 0);
+
+                ImGui.SetNextItemWidth(60 * ImGui.GetIO().FontGlobalScale);
+                if (positionOption.UsePercentage) {
+                    if (!UseFixedPosition) {
+                        ImGui.Text($"{positionOption.Percentage}");
+                    } else {
+                        r |= ImGui.DragFloat($"##pos_percentage_{name}_{Guid}", ref positionOption.Percentage, 0.05f);
+                    }
+                } else {
+                    if (!UseFixedPosition) {
+                        ImGui.Text($"{positionOption.Pixels}");
+                    } else {
+                        r |= ImGui.DragInt($"##pos_pixel_{name}_{Guid}", ref positionOption.Pixels);
+                    }
+                }
+                ImGui.SameLine();
+                if (!UseFixedPosition) {
+                     ImGui.TextUnformatted(positionOption.UsePercentage ? "%" : "px");
+                } else {
+                    var percentageOption = positionOption.UsePercentage ? 1 : 0;
+                    ImGui.SetNextItemWidth(50 * ImGui.GetIO().FontGlobalScale);
+                    if (ImGui.Combo($"##pos_usePercentage_{name}_{Guid}", ref percentageOption, "px\0%")) {
+                        r = true;
+                        positionOption.UsePercentage = percentageOption == 1;
+                    }
+                }
+
+                ImGui.SameLine();
+                ImGui.Text(" from the ");
+                ImGui.SameLine();
+                if (!UseFixedPosition) {
+                    ImGui.Text(positionOption.InvertSide ? inverted : normal);
+                } else {
+                    var invertOption = positionOption.InvertSide ? 1 : 0;
+                    ImGui.SetNextItemWidth(80 * ImGui.GetIO().FontGlobalScale);
+                    if (ImGui.Combo($"##pos_invert_{name}_{Guid}", ref invertOption, $"{normal}\0{inverted}")) {
+                        r = true;
+                        positionOption.InvertSide = invertOption == 1;
+                    }
+                }
+
+                ImGui.SameLine();
+                ImGui.Text(" side.");
+
+                if (LastPosition != null && LastSize != null) {
+                    var cPosPx = vertical ? LastPosition.Value.Y : LastPosition.Value.X;
+                    var cSize = vertical ? LastSize.Value.Y : LastSize.Value.X;
+                    var cWinSize = vertical ? ImGui.GetIO().DisplaySize.Y : ImGui.GetIO().DisplaySize.X;
+                    if (positionOption.InvertSide) {
+                        if (!UseFixedPosition || positionOption.UsePercentage) positionOption.Pixels = (int)(cWinSize - (cPosPx + cSize));
+                        if (!UseFixedPosition || !positionOption.UsePercentage) positionOption.Percentage = (cWinSize - (cPosPx + cSize)) / cWinSize * 100;
+                    } else {
+                        if (!UseFixedPosition || positionOption.UsePercentage) positionOption.Pixels = (int)cPosPx;
+                        if (!UseFixedPosition || !positionOption.UsePercentage) positionOption.Percentage = cPosPx / cWinSize * 100f;
+                    }
+                }
+
+                ImGui.PopStyleVar(2);
+                ImGui.Unindent();
+                return r;
+            }
+
+            if (PositionEditor(false, "Horizontal", "Left", "Right")) mainConfig.Save();
+            if (PositionEditor(true, "Vertical", "Top", "Bottom")) mainConfig.Save();
+
+            ImGui.Separator();
+            ImGui.Separator();
+
             ImGui.Text("Display Options");
             ImGui.Separator();
             if (ImGui.Checkbox($"Hide outside of combat##{this.Guid}", ref this.OnlyInCombat)) {
@@ -304,15 +415,12 @@ namespace RemindMe.Config {
             if (ImGui.Checkbox($"Pulse when ready##{this.Guid}", ref this.PulseReady)) mainConfig.Save();
 
             if (this.PulseReady) {
-
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(100);
                 if (ImGui.SliderFloat($"###pulseSpeed{this.Guid}", ref this.PulseSpeed, 0.5f, 2f, "Speed")) mainConfig.Save();
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(100);
                 if (ImGui.SliderFloat($"###pulseIntensity{this.Guid}", ref this.PulseIntensity, 0.1f, 2f, "Intensity")) mainConfig.Save();
-
-
             }
 
             ImGui.Separator();

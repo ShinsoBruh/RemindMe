@@ -401,6 +401,57 @@ namespace RemindMe {
                         ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 1);
                     }
 
+                    if (display.UseFixedPosition) {
+                        var pX = 0f;
+                        var pY = 0f;
+                        if (display.LastSize != null) {
+                            var hPos = display.HorizontalPosition;
+                            var vPos = display.VerticalPosition;
+                            var size = display.LastSize.Value;
+                            var dSize = ImGui.GetIO().DisplaySize;
+
+                            pX = hPos.InvertSide ? dSize.X - size.X : 0;
+                            pY = vPos.InvertSide ? dSize.Y - size.Y : 0;
+
+                            if (hPos.UsePercentage) {
+                                if (hPos.InvertSide) {
+                                    pX -= dSize.X * (hPos.Percentage / 100);
+                                } else {
+                                    pX += dSize.X * (hPos.Percentage / 100);
+                                }
+                            } else {
+                                if (hPos.InvertSide) {
+                                    pX -= hPos.Pixels;
+                                } else {
+                                    pX += hPos.Pixels;
+                                }
+                            }
+
+                            if (vPos.UsePercentage) {
+                                if (vPos.InvertSide) {
+                                    pY -= dSize.Y * (vPos.Percentage / 100);
+                                } else {
+                                    pY += dSize.Y * (vPos.Percentage / 100);
+                                }
+                            } else {
+                                if (vPos.InvertSide) {
+                                    pY -= vPos.Pixels;
+                                } else {
+                                    pY += vPos.Pixels;
+                                }
+                            }
+                        }
+
+
+                        ImGui.SetNextWindowPos(new Vector2(pX, pY));
+                    }
+
+                    if (display.UseFixedSize) {
+                        flags |= ImGuiWindowFlags.NoResize;
+                        ImGui.SetNextWindowSize(display.FixedSize);
+                    }
+
+
                     var isBegin = ImGui.Begin($"Display##{display.Guid}", flags);
                     if (display.IsClickableHovered || !display.Locked) {
                         ImGui.PopStyleColor(2);
@@ -446,6 +497,42 @@ namespace RemindMe {
                             }
                         }
                     }
+
+                    display.LastPosition = ImGui.GetWindowPos();
+
+                    if (display.LastSize != null  && !display.UseFixedSize) {
+                        var newSize = ImGui.GetWindowSize();
+                        if (display.HorizontalPosition.InvertSide) {
+                            // Update Horizontal Position for new size
+                            var hDiff = display.LastSize.Value.X - newSize.X;
+
+                            if (hDiff != 0) {
+                                if (display.HorizontalPosition.UsePercentage) {
+                                    display.HorizontalPosition.Percentage += (hDiff / ImGui.GetIO().DisplaySize.X) * 100;
+                                } else {
+                                    display.HorizontalPosition.Pixels += (int) hDiff;
+                                }
+                            }
+                        }
+
+                        if (display.VerticalPosition.InvertSide) {
+                            // Update Vertical Position for new size
+                            var vDiff = display.LastSize.Value.Y - newSize.Y;
+                            if (vDiff != 0) {
+                                if (display.VerticalPosition.UsePercentage) {
+                                    display.VerticalPosition.Percentage += (vDiff / ImGui.GetIO().DisplaySize.Y) * 100;
+                                } else {
+                                    display.VerticalPosition.Pixels += (int) vDiff;
+                                }
+                            }
+
+                        }
+
+                        display.LastSize = newSize;
+                    } else {
+                        display.LastSize = ImGui.GetWindowSize();
+                    }
+
                     ImGui.End();
                 }
             }
