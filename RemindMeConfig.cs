@@ -68,7 +68,10 @@ namespace RemindMe
             
             bool drawConfig = true;
             ImGui.SetNextWindowSizeConstraints(new Vector2(400, 400), new Vector2(1200, 1200));
-            if (!ImGui.Begin($"{plugin.Name} - Configuration###cooldownMonitorSetup", ref drawConfig)) return drawConfig;
+            if (!ImGui.Begin($"{plugin.Name} - Configuration###cooldownMonitorSetup", ref drawConfig)) {
+                ImGui.End();
+                return drawConfig;
+            }
             if (InstallNoticeDismissed != 1) {
                 
                 ImGui.TextWrapped($"Thank you for installing {plugin.Name}.\nI am currently working on completely rewriting the plugin but please don't hesitate to bring up any issues you have with the current version. Things seem to be relatively stable, but some things may still pop up.");
