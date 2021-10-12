@@ -31,7 +31,10 @@ namespace RemindMe
         private bool showGlobalCooldowns;
         public long PollingRate = 100;
         private const int GlobalCooldownGroup = 58;
+
+        // General Reminder Configs
         public int FoodReminderMinimum = 600;
+        public int LeveReminderThreshold = 96;
 
         [JsonIgnore] private List<StatusMonitor> visibleStatusMonitor = new();
 
