@@ -74,6 +74,7 @@ namespace RemindMe {
                 case 22: {
                         // DRG
                         StatusMonitorConfigDisplay(1864, 20, selfOnly: true); // Lance Charge
+                        StatusMonitorConfigDisplay(1453, 20, selfOnly: true);
                         StatusMonitorConfigDisplay(1914, 30, alwaysAvailable: true, minLevel: 18); // Disembowment
                         StatusMonitorConfigDisplay(118, 24, alwaysAvailable: true, minLevel: 50); // Chaos Thrust
                         MeleeRoleEffects();
