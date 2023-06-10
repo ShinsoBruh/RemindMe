@@ -1,5 +1,4 @@
 ﻿using Dalamud.Configuration;
-using Dalamud.Plugin;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
@@ -111,6 +110,12 @@ namespace RemindMe
 
                 if (ImGui.BeginTabItem("Reminders")) {
                     DrawRemindersTab();
+                    ImGui.EndTabItem();
+                }
+
+                        if (ImGui.BeginTabItem("Priority"))
+                {
+                    DrawPriorityTab();
                     ImGui.EndTabItem();
                 }
             }
