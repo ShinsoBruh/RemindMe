@@ -332,7 +332,17 @@ namespace RemindMe {
 
             timerList.Sort((a, b) => {
                 var diff = a.TimerRemaining - b.TimerRemaining;
-                if (Math.Abs(diff) < 0.1) return string.CompareOrdinal(a.Name, b.Name); // Equal
+                if (Math.Abs(diff) < 0.1)
+                {
+                    if (display.SortByPriority && display.SortPriorities.ContainsKey(a.Name) && display.SortPriorities.ContainsKey(b.Name))
+                    {
+                        return display.SortPriorities[a.Name] - display.SortPriorities[b.Name];
+                    }
+                    else
+                    {
+                        return string.CompareOrdinal(a.Name, b.Name); // Equal
+                    }
+                }
                 if (diff < 0) return -1;
                 return 1;
             });

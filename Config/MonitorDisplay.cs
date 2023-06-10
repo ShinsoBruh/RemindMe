@@ -77,6 +77,8 @@ namespace RemindMe.Config {
 
         public bool OnlyInDungeon = false;
         public bool OnlyNotInDungeon = false;
+        public bool SortByPriority = false;
+        public Dictionary<string, int> SortPriorities = new Dictionary<string, int>();
 
         public bool PulseReady = false;
         public float PulseSpeed = 1.0f;
